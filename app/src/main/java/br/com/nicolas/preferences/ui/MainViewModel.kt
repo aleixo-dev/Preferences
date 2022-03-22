@@ -7,7 +7,10 @@ import androidx.lifecycle.viewModelScope
 import br.com.nicolas.preferences.data.repository.PrefRepository
 import br.com.nicolas.preferences.models.Comments
 import br.com.nicolas.preferences.models.CommentsResponse
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
 class MainViewModel(
@@ -19,14 +22,20 @@ class MainViewModel(
 
     init {
         getCommentsFromApi()
-        getLocal()
     }
 
     private fun getCommentsFromApi() = viewModelScope.launch {
-        localStorage.getRemote().collect {
-            val data = it
-            localStorage.saveLocal(data)
-        }
+        localStorage.getRemote()
+            .onStart {
+
+            }
+            .catch {
+                getLocal()
+            }
+            .collect { comments ->
+                localStorage.saveLocal(comments)
+                _state.value = comments
+            }
     }
 
     private fun getLocal() {

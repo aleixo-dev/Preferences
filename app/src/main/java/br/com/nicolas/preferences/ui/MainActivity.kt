@@ -1,14 +1,11 @@
 package br.com.nicolas.preferences.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import br.com.nicolas.preferences.CommentsAdapter
-import br.com.nicolas.preferences.R
 import br.com.nicolas.preferences.databinding.ActivityMainBinding
 import br.com.nicolas.preferences.models.Comments
-import br.com.nicolas.preferences.models.CommentsResponse
 import kotlinx.coroutines.launch
 import org.koin.androidx.scope.activityScope
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -23,8 +20,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        observerViewModel()
+    }
 
-        viewModel.state.observe(activityScope().lifecycleOwner) {
+    private fun observerViewModel() {
+        viewModel.state.observe(this) {
             setupRecyclerView(it)
         }
     }
