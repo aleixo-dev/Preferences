@@ -6,12 +6,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.nicolas.preferences.data.repository.PrefRepository
 import br.com.nicolas.preferences.models.Comments
-import br.com.nicolas.preferences.models.CommentsResponse
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
+
+/**
+ * Quando tiver internet, salvar os dados no local
+ * para garantir que, quando não tiver internet,
+ * retornar esses dados da última request feita.
+ * sendo assim, evitando exception, e mostrar os dados da última requisição.
+ */
 
 class MainViewModel(
     private val localStorage: PrefRepository
