@@ -44,6 +44,16 @@ class MainViewModel(
     }
 
     private fun getLocal() {
-        _state.value = localStorage.getLocal()
+        if (localStorage.getLocal().isNullOrEmpty()) {
+            _state.value = arrayListOf(
+                Comments(
+                    name = "Please, check your connections",
+                    email = "Please, check your connections",
+                    body = "Please, check your connections"
+                )
+            )
+        } else {
+            _state.value = localStorage.getLocal()
+        }
     }
 }
